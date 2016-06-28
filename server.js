@@ -1,3 +1,5 @@
+'use strict'
+
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
@@ -8,11 +10,9 @@ app.use(bodyParser());
 
 
 /*
-
   I want you to decouple all the function as I did in the app.delete
   I want you to TRY figure out why is our UI not updating when we click on delete (x button)
-
- */
+*/
 
 
 var Storage = function() {
@@ -21,7 +21,7 @@ var Storage = function() {
 };
 
 Storage.prototype.add = function(name) {
-    //console.log(name);
+    console.log(name);
     var item = {
         name: name,
         id: this.id
@@ -31,7 +31,7 @@ Storage.prototype.add = function(name) {
     return item;
 };
 
-Storage.prototype.appAdd = function(req,res){
+Storage.prototype.get = function(req,res){
   //console.log(storage.items);
   res.json(storage.items);
 }
@@ -54,6 +54,7 @@ Storage.prototype.post = function(req, res){
 Storage.prototype.delete = function(req, res) {
     storage.items.splice(req.params.id, 1);
     res.status(202);
+    console.log(storage.items);
 };
 
 
