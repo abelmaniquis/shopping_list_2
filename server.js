@@ -34,12 +34,18 @@ Storage.prototype.get = function(req,res){
   res.json(storage.items);
 }
 
-Storage.prototype.put = function(req,res){
-  storage.items[req.body.id].name = req.body.name;
-  console.log(req.body.name);
-  console.log(storage.items[req.body.id]);
-  res.json(storage.items[req.body.id].name);
+Storage.prototype.put = function(req, res) {
+
+   for (var i = 0; i < storage.items.length; i++) {
+       if (req.params.id == storage.items[i].id) {
+           storage.items[storage.items.indexOf(storage.items[i])].name = req.body.name;
+       }
+   }
+
+   res.status(204).json(storage.items);
 };
+
+
 
 Storage.prototype.post = function(req, res){
   if (!req.body) {
@@ -47,15 +53,16 @@ Storage.prototype.post = function(req, res){
     }
 
     var item = storage.add(req.body.name);
-    res.status(201).json(item);
+    res.status(201).json(item); //means created
 };
 
-
 Storage.prototype.delete = function(req, res) {
-    console.log(storage.items);
-    storage.items.splice(req.params.id,1);
-    console.log(storage.items);
-    res.status(201).json(storage.items);
+    
+   var i = res.id
+   storage.items.splice(storage.items[i], 1);
+
+   res.status(200).json(storage.items);
+   console.log(storage.items.length);
 };
 
 var storage = new Storage();
@@ -69,6 +76,8 @@ The app object uses the express.static middleware
 which tells express to serve any static content
 contained in the public folder
 */
+
+//You are treating id as an index, it is not. That is where the problems are coming from.
 
 
 app.get('/items', storage.get);
