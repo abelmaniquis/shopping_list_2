@@ -15,13 +15,12 @@ app.use(bodyParser());
 */
 
 
-var Storage = function() {
+var Storage = function(){
     this.items = [];
     this.id = 0;
 };
 
 Storage.prototype.add = function(name) {
-    console.log(name);
     var item = {
         name: name,
         id: this.id
@@ -32,13 +31,14 @@ Storage.prototype.add = function(name) {
 };
 
 Storage.prototype.get = function(req,res){
-  //console.log(storage.items);
   res.json(storage.items);
 }
 
 Storage.prototype.put = function(req,res){
   storage.items[req.body.id].name = req.body.name;
-  res.json(storage.items);
+  console.log(req.body.name);
+  console.log(storage.items[req.body.id]);
+  res.json(storage.items[req.body.id].name);
 };
 
 Storage.prototype.post = function(req, res){
@@ -52,12 +52,11 @@ Storage.prototype.post = function(req, res){
 
 
 Storage.prototype.delete = function(req, res) {
-    storage.items.splice(req.params.id, 1);
-    res.status(202);
     console.log(storage.items);
+    storage.items.splice(req.params.id,1);
+    console.log(storage.items);
+    res.status(201).json(storage.items);
 };
-
-
 
 var storage = new Storage();
 storage.add('Broad beans');
@@ -72,16 +71,13 @@ contained in the public folder
 */
 
 
-
-app.get('/items', storage.appAdd);
-
+app.get('/items', storage.get);
 app.post('/items', storage.post);
-
 app.put('/items/:id', storage.put);
-
 app.delete('/items/:id', storage.delete);
 
 
-
-
 app.listen(process.env.PORT || 3005);
+
+exports.app = app;
+exports.storage = storage;
