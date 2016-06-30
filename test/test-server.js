@@ -13,7 +13,6 @@ and that you should also call the chai.should function.
 
 chai.use(chaiHttp);
 
-
 describe('Shopping List', function() {
         it('should list items on GET', function(done) {
         chai.request(app)
@@ -67,6 +66,7 @@ describe('Shopping List', function() {
         .put('/items/:id')
         .end(function(err,res){
             should.equal(err,null);
+            
             done();
         })
     });
@@ -79,6 +79,8 @@ describe('Shopping List', function() {
                 res.should.have.status(201);
                 storage.items.should.have.length(3);
                 storage.items[2].should.be.a('object');
+                storage.items[2].id.should.be.a('number');
+                storage.items[2].name.should.equal('Kale')
                 done();
             });
     });
