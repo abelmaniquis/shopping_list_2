@@ -75,6 +75,12 @@ describe('Shopping List', function() {
         .put('/items/:id')
         .end(function(err,res){
             should.equal(err,null);
+            res.should.have.status(204);
+            res.should.be.object;
+            res.body.should.be.a.object;
+            storage.items[0].should.have.property('name');
+            storage.items[1].should.have.property('name');
+            storage.items[2].should.have.property('name');
             storage.items[3].should.have.property('name');
             done();
         })
